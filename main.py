@@ -1,62 +1,48 @@
 import pygame
 import time
 
-pygame.init()
-
-
-# temp function of tick (time-control)
-def tick():
-    time.sleep(0.5)
-    pygame.display.update()
-
-
-# matrix edge dimensions preparations
-matrix_dimension = 10
-cell_length = 40
-gap_bw_cells = cell_length // 7
-
-# screen initialization
-#   with update to cell size
-screen_width = cell_length * matrix_dimension + gap_bw_cells * (matrix_dimension + 1)
-screen_height = cell_length * matrix_dimension + gap_bw_cells * (matrix_dimension + 1)
-screen = pygame.display.set_mode((screen_width, screen_height))
-
-# test of text
-
 # colors initialization
-
 COLOR_RGB_BLACK = (0, 0, 0)
 COLOR_RGB_WHITE = (255, 255, 255)
 COLOR_RGB_RED = (255, 0, 0)
 COLOR_RGB_GREEN = (0, 255, 0)
 COLOR_RGB_BLUE = (0, 0, 255)
 
+pygame.init()
+
+
+# temp function of tick (time-control)
+def tick(timing: int | float):
+    time.sleep(timing)
+    pygame.display.update()
+
+
+def return_color_for_cell(matrix, coor_x, coor_y):
+    if matrix[coor_x][coor_y]:
+        return COLOR_RGB_BLACK
+    else:
+        return COLOR_RGB_WHITE
+
+
+def reverse_flag(matrix, coor_x, coor_y):
+    if matrix[coor_x][coor_y] is True:
+        matrix[coor_x][coor_y] = False
+    else:
+        matrix[coor_x][coor_y] = True
+
+
+# matrix edge dimensions preparations
+matrix_dimension = 50
+cell_length = 10
+gap_bw_cells = cell_length // 10
+
+# screen initialization with update to cell size
+screen_width = cell_length * matrix_dimension + gap_bw_cells * (matrix_dimension + 1)
+screen_height = cell_length * matrix_dimension + gap_bw_cells * (matrix_dimension + 1)
+screen = pygame.display.set_mode((screen_width, screen_height))
+
 # matrix initialization - to store values
-matrix = [[0 for j in range(matrix_dimension)] for i in range(matrix_dimension)]
-
-# mask-matrix to check mouse interaction
-mask_matrix_base_coordinates_of_rectangles_wo_gaps = [[j for j in range(matrix_dimension)] for q in
-                                                      range(matrix_dimension)]
-
-for i in range(matrix_dimension):
-    for j in range(matrix_dimension):
-        mask_matrix_base_coordinates_of_rectangles_wo_gaps[i][j] = [gap_bw_cells + i * (cell_length + gap_bw_cells),
-                                                                    gap_bw_cells + j * (cell_length + gap_bw_cells)]
-
-for i in range(matrix_dimension):
-    for j in range(matrix_dimension):
-        print(mask_matrix_base_coordinates_of_rectangles_wo_gaps[i][j], end='')
-    print()
-
-    # matrix for drawing the display, based on values matrix cols|rows
-drawing_coordinates_matrix = [[j for j in i] for i in matrix]
-
-# fill drawing matrix with rectangles + gaps b\w them
-for i in range(matrix_dimension):
-    for j in range(matrix_dimension):
-        drawing_coordinates_matrix[i][j] = pygame.Rect((i * (cell_length + gap_bw_cells) + gap_bw_cells,
-                                                        j * (cell_length + gap_bw_cells) + gap_bw_cells,
-                                                        cell_length, cell_length))
+matrix = [[False for j in range(matrix_dimension)] for i in range(matrix_dimension)]
 
 # main loop
 run = True
@@ -64,12 +50,6 @@ run = True
 while run:
 
     mouse_coord = []
-
-    screen.fill(COLOR_RGB_BLACK)
-
-    for line in drawing_coordinates_matrix:
-        for pos in line:
-            pygame.draw.rect(screen, COLOR_RGB_WHITE, pos)
 
     # event handler
     for event in pygame.event.get():
@@ -81,12 +61,21 @@ while run:
         if event.type == pygame.MOUSEBUTTONUP:
             mouse_coord = pygame.mouse.get_pos()
 
-    if mouse_coord:
-        pygame.draw.rect(screen, COLOR_RGB_RED, (mouse_coord[0], mouse_coord[1], 50, 50))
-    else:
-        pass
+    # screen drawing section
+    screen.fill(COLOR_RGB_BLACK)
 
-    # pygame.display.update()
-    tick()
+    if mouse_coord:
+        coordinates_of_click = [mouse_coord[0] // (cell_length + gap_bw_cells),
+                                mouse_coord[1] // (cell_length + gap_bw_cells)]
+        reverse_flag(matrix, coordinates_of_click[0], coordinates_of_click[1])
+
+    for i in range(matrix_dimension):
+        for j in range(matrix_dimension):
+            pygame.draw.rect(screen, return_color_for_cell(matrix, i, j),
+                             (i * (cell_length + gap_bw_cells) + gap_bw_cells,
+                              j * (cell_length + gap_bw_cells) + gap_bw_cells,
+                              cell_length, cell_length))
+
+    tick(0.001)
 
 pygame.quit()
