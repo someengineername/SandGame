@@ -45,7 +45,7 @@ def is_bottom_position_sand(matrix, coor_x, coor_y):
 
 
 # matrix edge dimensions preparations
-matrix_dimension = 50
+matrix_dimension = 100
 cell_length = 5
 gap_bw_cells = cell_length // 10
 
@@ -80,6 +80,12 @@ while run:
                                     mouse_coord[1] // (cell_length + gap_bw_cells)]
             reverse_flag(matrix, coordinates_of_click[0], coordinates_of_click[1])
 
+    temp_coordinates = pygame.mouse.get_pos()
+    coordinates_of_click = [temp_coordinates[0] // (cell_length + gap_bw_cells),
+                            temp_coordinates[1] // (cell_length + gap_bw_cells)]
+    reverse_flag(matrix, coordinates_of_click[0], coordinates_of_click[1])
+    time.sleep(0.001)
+
     # -------------
     # matrix-for-drawing preparation
     # -------------
@@ -89,8 +95,40 @@ while run:
     for i in range(matrix_dimension - 1, -1, -1):
         for j in range(matrix_dimension - 1, -1, -1):
             if matrix[i][j] is True:
+                # bottom-side condition
                 if j == matrix_dimension - 1:
                     temp_matrix[i][j] = True
+                # left-hand side condition
+                elif i == 0:
+                    # if bottom is empty
+                    if matrix[i][j + 1] is False:
+                        temp_matrix[i][j] = False
+                        temp_matrix[i][j + 1] = True
+                    # if bottom is occupied
+                    else:
+                        # if only bottom
+                        if matrix[i + 1][j + 1] is False:
+                            temp_matrix[i][j] = False
+                            temp_matrix[i + 1][j + 1] = True
+                        # right-side as well, do nothing
+                        elif matrix[i + 1][j + 1] is True:
+                            temp_matrix[i][j] = True
+                # right-hand side condition
+                elif i == matrix_dimension - 1:
+                    # if bottom is empty
+                    if matrix[i][j + 1] is False:
+                        temp_matrix[i][j] = False
+                        temp_matrix[i][j + 1] = True
+                    # if bottom is occupied
+                    else:
+                        # if only bottom
+                        if matrix[i - 1][j + 1] is False:
+                            temp_matrix[i][j] = False
+                            temp_matrix[i - 1][j + 1] = True
+                        # left-side as well, do nothing
+                        elif matrix[i - 1][j + 1] is True:
+                            temp_matrix[i][j] = True
+                # general behaviour condition
                 else:
                     # if bottom is empty
                     if matrix[i][j + 1] is False:
@@ -98,7 +136,6 @@ while run:
                         temp_matrix[i][j + 1] = True
                     # if bottom is occupied
                     else:
-
                         # if right side occupied
                         if matrix[i - 1][j + 1] is False and matrix[i + 1][j + 1] is True:
                             temp_matrix[i - 1][j + 1] = True
@@ -114,8 +151,6 @@ while run:
                         # if everything's occupied
                         elif matrix[i + 1][j + 1] is True and matrix[i - 1][j + 1] is True and matrix[i][j + 1] is True:
                             temp_matrix[i][j] = True
-            else:
-                pass
 
     # -------------
     # screen drawing section
@@ -135,7 +170,7 @@ while run:
     # -------------
     # frame-generation-like
     # -------------
-    tick(0.05)
+    tick(0.001)
 
     matrix = temp_matrix
 
