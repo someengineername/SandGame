@@ -83,8 +83,10 @@ while run:
     temp_coordinates = pygame.mouse.get_pos()
     coordinates_of_click = [temp_coordinates[0] // (cell_length + gap_bw_cells),
                             temp_coordinates[1] // (cell_length + gap_bw_cells)]
-    reverse_flag(matrix, coordinates_of_click[0], coordinates_of_click[1])
-    time.sleep(0.001)
+    if (matrix[coordinates_of_click[0] + 1][coordinates_of_click[1] + 1] is False and
+            matrix[coordinates_of_click[0] - 1][coordinates_of_click[1] + 1] is False and
+            matrix[coordinates_of_click[0]][coordinates_of_click[1] + 1] is False):
+        reverse_flag(matrix, coordinates_of_click[0], coordinates_of_click[1])
 
     # -------------
     # matrix-for-drawing preparation
