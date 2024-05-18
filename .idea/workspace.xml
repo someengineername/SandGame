@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="13603d1b-f007-454a-8f79-25a9673c9b24" name="Changes" comment="базовый коммит">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="13603d1b-f007-454a-8f79-25a9673c9b24" name="Changes" comment="clicker advanced - change of color in a cell (and reverse)&#10;small refactoring">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -112,7 +111,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715959649892</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="clicker advanced - change of color in a cell (and reverse)&#10;small refactoring">
+      <option name="closed" value="true" />
+      <created>1716028836167</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1716028836167</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -128,6 +135,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="базовый коммит" />
-    <option name="LAST_COMMIT_MESSAGE" value="базовый коммит" />
+    <MESSAGE value="clicker advanced - change of color in a cell (and reverse)&#10;small refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="clicker advanced - change of color in a cell (and reverse)&#10;small refactoring" />
   </component>
 </project>
