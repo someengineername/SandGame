@@ -20,28 +20,9 @@ def tick(timing: int | float):
 
 def return_color_for_cell(matrix, coor_x, coor_y):
     if matrix[coor_x][coor_y]:
-        return COLOR_RGB_BLACK
-    else:
         return COLOR_RGB_WHITE
-
-
-def reverse_flag(matrix, coor_x, coor_y):
-    if matrix[coor_x][coor_y] is True:
-        matrix[coor_x][coor_y] = False
     else:
-        matrix[coor_x][coor_y] = True
-
-
-def is_actual_position_sand(matrix, coor_x, coor_y):
-    if matrix[coor_x][coor_y] is False:
-        return False
-    return True
-
-
-def is_bottom_position_sand(matrix, coor_x, coor_y):
-    if matrix[coor_x + 1][coor_y] is False:
-        return False
-    return True
+        return COLOR_RGB_BLACK
 
 
 # matrix edge dimensions preparations
@@ -63,6 +44,7 @@ run = True
 while run:
 
     mouse_coord = []
+    pressed_mouse = False
 
     # -------------
     # event handler
@@ -74,19 +56,20 @@ while run:
             run = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_coord = pygame.mouse.get_pos()
+            pressed_mouse = True
 
-            coordinates_of_click = [mouse_coord[0] // (cell_length + gap_bw_cells),
-                                    mouse_coord[1] // (cell_length + gap_bw_cells)]
-            reverse_flag(matrix, coordinates_of_click[0], coordinates_of_click[1])
+        if event.type == pygame.MOUSEBUTTONUP:
+            pressed_mouse = False
 
     temp_coordinates = pygame.mouse.get_pos()
     coordinates_of_click = [temp_coordinates[0] // (cell_length + gap_bw_cells),
                             temp_coordinates[1] // (cell_length + gap_bw_cells)]
-    if (matrix[coordinates_of_click[0] + 1][coordinates_of_click[1] + 1] is False and
-            matrix[coordinates_of_click[0] - 1][coordinates_of_click[1] + 1] is False and
-            matrix[coordinates_of_click[0]][coordinates_of_click[1] + 1] is False):
-        reverse_flag(matrix, coordinates_of_click[0], coordinates_of_click[1])
+
+    if (0 < coordinates_of_click[0] < matrix_dimension - 1) and (0 < coordinates_of_click[1] < matrix_dimension - 1):
+        if (matrix[coordinates_of_click[0] + 1][coordinates_of_click[1] + 1] is False and
+                matrix[coordinates_of_click[0] - 1][coordinates_of_click[1] + 1] is False and
+                matrix[coordinates_of_click[0]][coordinates_of_click[1] + 1] is False):
+            matrix[coordinates_of_click[0]][coordinates_of_click[1]] = True
 
     # -------------
     # matrix-for-drawing preparation
@@ -172,7 +155,7 @@ while run:
     # -------------
     # frame-generation-like
     # -------------
-    tick(0.001)
+    tick(0.0001)
 
     matrix = temp_matrix
 
