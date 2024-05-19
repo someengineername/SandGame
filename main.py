@@ -9,6 +9,8 @@ COLOR_RGB_RED = (255, 0, 0)
 COLOR_RGB_GREEN = (0, 255, 0)
 COLOR_RGB_BLUE = (0, 0, 255)
 
+print('hello!')
+
 pygame.init()
 
 
